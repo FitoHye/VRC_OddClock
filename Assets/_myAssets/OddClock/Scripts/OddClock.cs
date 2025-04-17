@@ -16,14 +16,29 @@ public class OddClock : UdonSharpBehaviour
     [SerializeField] private Transform minuteHand; // 0.1 degrees per second
     [SerializeField] private Transform secondHand; // 6 degrees per second
     [Header("Tick Sound")]
-    [SerializeField] private AudioClip tickSound;
+    [SerializeField] private GameObject SoundObject;
+    [SerializeField] private AudioClip TickSound;
     private AudioSource audioSource;
 
     private float tickTimer = 0f;
 
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
+        if (SoundObject != null){
+            if (audioSource != null && TickSound != null)
+            {
+                audioSource = SoundObject.GetComponent<AudioSource>();
+                audioSource.clip = TickSound;
+            }
+            else
+            {
+                Debug.LogWarning("AudioSource or TickSound not properly assigned!");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("SoundObject is not assigned!");
+        }
     }
 
     void Update()
@@ -82,6 +97,9 @@ public class OddClock : UdonSharpBehaviour
 
     private void tickSoundPlay()
     {
-        audioSource.PlayOneShot(tickSound);
+        if (SoundObject && TickSound)
+        {
+            audioSource.PlayOneShot(TickSound);
+        }
     }
 }
