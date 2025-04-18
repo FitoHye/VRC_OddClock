@@ -25,9 +25,9 @@ public class OddClock : UdonSharpBehaviour
     void Start()
     {
         if (SoundObject != null){
+            audioSource = SoundObject.GetComponent<AudioSource>();
             if (audioSource != null && TickSound != null)
             {
-                audioSource = SoundObject.GetComponent<AudioSource>();
                 audioSource.clip = TickSound;
             }
             else
@@ -77,12 +77,12 @@ public class OddClock : UdonSharpBehaviour
         float minuteAngle = nowMinute * 6f + secondAngle / 60;
         float hourAngle = nowHour * 30 + minuteAngle / 12;
 
-        // 소리 출력 TODO: 왜 고장났는지 찾고 이해할 것.
-        // if (tickTimer >= 1f)
-        // {
-        //     tickSoundPlay();
-        //     tickTimer = 0f;
-        // }
+        // 소리 출력
+        if (tickTimer >= 1f)
+        {
+            tickSoundPlay();
+            tickTimer = 0f;
+        }
 
         //각도 변경
         CalculateRotationVector(clockBody, 0-secondAngle);
